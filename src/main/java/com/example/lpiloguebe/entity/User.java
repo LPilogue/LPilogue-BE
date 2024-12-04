@@ -42,12 +42,14 @@ public class User extends Base{
     private List<Diary> diaryList = new ArrayList<>();
 
     @Builder
-    public User(String username, String password, String email, String name, String phone, Gender gender, int age, List<Diary> diaryList) {
+    public User(String username, String password, String email, String name, String phone, Gender gender, int age) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
         this.phone = phone;
+        this.gender = gender;
+        this.age = age;
     }
 
 }
