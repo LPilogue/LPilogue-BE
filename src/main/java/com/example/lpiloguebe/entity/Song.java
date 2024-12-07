@@ -27,16 +27,24 @@ public class Song extends Base {
     @Column(nullable = false)
     private int isLiked;
 
+    @Column(nullable = false)
+    private String filePath;
+
+    @Column(nullable = false)
+    private String artist;
+
     @JoinColumn(name = "diaryId")
     @ManyToOne(fetch = FetchType.LAZY)
     private Diary diary;
 
     @Builder
-    public Song(String name, String songURI, SongType type, int isLiked, Diary diary) {
+    public Song(String name, String songURI, SongType type, int isLiked, Diary diary, String filePath, String artist) {
         this.name = name;
         this.songURI = songURI;
         this.type = type;
         this.isLiked = isLiked;
         this.diary = diary;
+        this.filePath = filePath;
+        this.artist = artist;
     }
 }
