@@ -74,7 +74,7 @@ public class DiaryService {
                             .diary(diary)
                             .artist(songRequestDTO.getArtist())
                             .filePath(songRequestDTO.getFilePath())
-                            .isLiked(songRequestDTO.getIsLiked())
+                            .isLiked(0)
                             .name(songRequestDTO.getName())
 //                            .songURI(songRequestDTO.getSongURI())
                             .type(songRequestDTO.getType())

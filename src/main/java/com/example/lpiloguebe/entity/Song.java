@@ -48,4 +48,12 @@ public class Song extends Base {
         this.filePath = filePath;
         this.artist = artist;
     }
+
+    public void updateIsLiked(int isLiked) {
+        this.isLiked = isLiked;
+    }
+
+    public void updateType(SongType type) {
+        this.type = type;
+    }
 }
