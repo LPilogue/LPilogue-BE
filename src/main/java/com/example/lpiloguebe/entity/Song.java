@@ -5,10 +5,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
+@ToString
 public class Song extends Base {
 
     @Id
@@ -18,7 +19,7 @@ public class Song extends Base {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String songURI;
 
     @Column(nullable = false)

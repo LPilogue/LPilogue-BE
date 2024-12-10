@@ -2,15 +2,15 @@ package com.example.lpiloguebe.entity;
 
 import com.example.lpiloguebe.enumeration.Gender;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
+@ToString
 public class User extends Base{
 
     @Id
