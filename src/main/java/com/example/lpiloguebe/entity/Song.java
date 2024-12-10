@@ -5,10 +5,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
+@ToString
 public class Song extends Base {
 
     @Id
@@ -18,7 +19,7 @@ public class Song extends Base {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String songURI;
 
     @Column(nullable = false)
@@ -27,16 +28,24 @@ public class Song extends Base {
     @Column(nullable = false)
     private int isLiked;
 
+    @Column(nullable = false)
+    private String filePath;
+
+    @Column(nullable = false)
+    private String artist;
+
     @JoinColumn(name = "diaryId")
     @ManyToOne(fetch = FetchType.LAZY)
     private Diary diary;
 
     @Builder
-    public Song(String name, String songURI, SongType type, int isLiked, Diary diary) {
+    public Song(String name, String songURI, SongType type, int isLiked, Diary diary, String filePath, String artist) {
         this.name = name;
         this.songURI = songURI;
         this.type = type;
         this.isLiked = isLiked;
         this.diary = diary;
+        this.filePath = filePath;
+        this.artist = artist;
     }
 }
