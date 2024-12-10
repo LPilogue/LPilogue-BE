@@ -25,4 +25,10 @@ public class DiaryController {
         diaryService.createDiary(diaryRequestDTO);
         return new ResponseEntity<>("일기 작성 완료", HttpStatus.OK);
     }
+
+    @DeleteMapping("/{diaryId}")
+    public ResponseEntity<?> deleteDiary(@PathVariable Long diaryId) {
+        diaryService.deleteDiary(diaryId);
+        return new ResponseEntity<>("일기 삭제 완료", HttpStatus.OK);
+    }
 }

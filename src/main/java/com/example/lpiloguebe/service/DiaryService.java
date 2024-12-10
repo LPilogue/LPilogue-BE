@@ -88,4 +88,12 @@ public class DiaryService {
 
 
     }
+
+    public void deleteDiary(Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new IllegalArgumentException("일기 정보가 없습니다."));
+        log.info("삭제할 일기 정보: {}", diary.toString());
+        diaryRepository.delete(diary);
+        log.info("일기 삭제 완료");
+    }
 }
