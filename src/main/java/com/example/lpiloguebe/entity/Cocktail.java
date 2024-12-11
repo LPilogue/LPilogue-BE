@@ -1,14 +1,11 @@
 package com.example.lpiloguebe.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
+@Getter
 public class Cocktail extends Base{
 
     @Id
@@ -20,7 +17,7 @@ public class Cocktail extends Base{
     private Diary diary;
 
     @JoinColumn(name = "cocktailDataId")
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private CocktailData cocktailData;
 
     @Builder

@@ -2,14 +2,12 @@ package com.example.lpiloguebe.entity;
 
 import com.example.lpiloguebe.enumeration.SongType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@Getter
 public class Song extends Base {
 
     @Id

@@ -1,13 +1,22 @@
 package com.example.lpiloguebe.service;
 
+import com.example.lpiloguebe.dto.DateDTO;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
+import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.*;
+import com.example.lpiloguebe.enumeration.SongType;
 import com.example.lpiloguebe.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -96,4 +105,43 @@ public class DiaryService {
         diaryRepository.delete(diary);
         log.info("일기 삭제 완료");
     }
+
+    public List<DiaryResponseDTO> getDiaryList(DateDTO dateDTO) {
+        // 년도, 월로 일기 리스트 조회
+        LocalDateTime startDate = LocalDate.of(dateDTO.getYear(), dateDTO.getMonth(), 1)
+                .atStartOfDay();
+        LocalDateTime endDate = LocalDate.of(dateDTO.getYear(), dateDTO.getMonth(), 1)
+                .withDayOfMonth(LocalDate.of(dateDTO.getYear(), dateDTO.getMonth(), 1)
+                        .lengthOfMonth()).atTime(23, 59, 59, 999999999); // 마지막 날 23:59:59.999999999
+
+        List<Diary> diaryList = diaryRepository.findDiariesByDateRange(startDate, endDate);
+
+        log.info("일기 리스트: {}", diaryList);
+        List<DiaryResponseDTO> diaryResponseDTOList = new ArrayList<>();
+
+        diaryList.forEach(diary -> {
+            // MAIN 타입의 Song을 가져옴
+            Optional<Song> mainSong = diary.getSongList().stream()
+                    .filter(song -> song.getType() == SongType.MAIN)
+                    .findAny();
+
+            // DiaryResponseDTO 생성
+            DiaryResponseDTO diaryResponseDTO = DiaryResponseDTO.builder()
+                    .createdAt(diary.getCreatedAt())
+                    .content(diary.getContent())
+                    .songName(mainSong.map(Song::getName).orElse(null))
+                    .songURI(mainSong.map(Song::getSongURI).orElse(null))
+                    .artist(mainSong.map(Song::getArtist).orElse(null))
+                    .songFilePath(mainSong.map(Song::getFilePath).orElse(null))
+                    .cocktailName(diary.getCocktail().getCocktailData().getName())
+                    .cocktailFilePath(diary.getCocktail().getCocktailData().getFilePath())
+                    .build();
+
+            log.info("일기 응답 정보: {}", diaryResponseDTO.toString());
+            diaryResponseDTOList.add(diaryResponseDTO);
+        });
+
+        return diaryResponseDTOList;
+    }
+
 }

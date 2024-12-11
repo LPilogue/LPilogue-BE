@@ -1,14 +1,14 @@
 package com.example.lpiloguebe.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
+@Getter
 public class CocktailData {
 
     @Id
@@ -30,8 +30,8 @@ public class CocktailData {
     @Column
     private String filePath;
 
-    @OneToOne(mappedBy = "cocktailData", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Cocktail cocktail;
+    @OneToMany(mappedBy = "cocktailData", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cocktail> cocktailList=new ArrayList<>();
 
     @Builder
     public CocktailData(String name, String color, String ingredients, String description, String filePath) {
