@@ -1,0 +1,39 @@
+services:
+  database:
+    container_name: mysql_db
+    image: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 2501
+      MYSQL_DATABASE: lpilogue
+      MYSQL_ROOT_HOST: "%"
+      TZ: 'Asia/Seoul'
+    ports:
+        - "3306:3306"
+    command:
+      - "mysqld"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+    networks:
+      - lpilogue-network
+
+  application:
+    container_name: docker-compose-test
+    restart: on-failure
+    image: hadoroke/lpilogue-be:1.0.0
+    ports:
+        - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/lpilogue?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "2501"
+    depends_on:
+      - database
+    networks:
+      - lpilogue-network
+
+networks:
+    lpilogue-network:
+
+
+
