@@ -1,10 +1,12 @@
+# Run Stage
 FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY ./build/libs/LPilogue-BE-0.0.1-SNAPSHOT.jar app.jar
+# 빌드 결과물 복사
+COPY  ./build/libs/*.jar lpilogue.jar
 
+# 포트 노출 및 실행
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
-
+CMD ["java", "-jar", "lpilogue.jar"]
