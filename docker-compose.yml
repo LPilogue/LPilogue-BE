@@ -1,21 +1,4 @@
 services:
-  database:
-    container_name: lpilogue-db
-    image: mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: dnwnswls2501
-#      MYSQL_DATABASE: lpilogue
-#      MYSQL_ROOT_HOST: "%"
-      TZ: 'Asia/Seoul'
-    ports:
-        - "3306:3306"
-    command:
-      - "mysqld"
-      - "--character-set-server=utf8mb4"
-      - "--collation-server=utf8mb4_unicode_ci"
-
-
   spring-boot-app:
     container_name: lpilogue-be
 #    restart: on-failure
@@ -26,15 +9,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://lpilogue-db.c5msg0qqmmcw.ap-northeast-2.rds.amazonaws.com:3306/lpilogue?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: "admin"
       SPRING_DATASOURCE_PASSWORD: "dnwnswls2501"
-    depends_on:
-      - database
-
-
-
-
-
-
-
-
-
-
+  
+  flask-app:
+    container_name: lpilogue-rec
+    image: hadoroke/lpilogue-rec:latest
+    ports:
+        - "5000:5000"
