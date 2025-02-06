@@ -10,8 +10,8 @@ services:
       SPRING_DATASOURCE_USERNAME: "admin"
       SPRING_DATASOURCE_PASSWORD: "dnwnswls2501"
   
-  flask-app:
-    container_name: lpilogue-rec
-    image: hadoroke/lpilogue-rec:latest
-    ports:
-        - "5000:5000"
+#  flask-app:
+#    container_name: lpilogue-rec
+#    image: hadoroke/lpilogue-rec:latest
+#    ports:
+#        - "5000:5000"
