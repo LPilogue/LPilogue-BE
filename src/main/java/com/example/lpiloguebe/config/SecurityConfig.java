@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -16,30 +18,39 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // 비밀번호 암호화
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        // 폼 로그인 비활성화
         http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login").permitAll()
-                        .anyRequest().permitAll()
-                );
-
+                .formLogin(AbstractHttpConfigurer::disable);
         http
-                .cors((cors) -> cors
-                        .configurationSource(new CorsConfigurationSource() {
-                            @Override
-                            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                                CorsConfiguration corsConfiguration = new CorsConfiguration();
-                                corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
-                                corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
+                .httpBasic(AbstractHttpConfigurer::disable);
 
-                                return corsConfiguration;
-                            }
-                        }));
-
+        // csrf 비활성화
         http
                 .csrf(AbstractHttpConfigurer::disable);
+
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/", "/signin", "/signup").permitAll()
+                        .anyRequest().authenticated()
+                );
+
+        // 세션 stateless 설정
+        http
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
+
+
 
         return http.build();
     }
