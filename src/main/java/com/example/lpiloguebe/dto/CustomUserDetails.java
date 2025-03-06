@@ -16,14 +16,15 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "ROLE_USER";
-            }
-        });
-        return collection;
+//        Collection<GrantedAuthority> collection = new ArrayList<>();
+//        collection.add(new GrantedAuthority() {
+//            @Override
+//            public String getAuthority() {
+//                return "ROLE_USER";
+//            }
+//        });
+//        return collection;
+        return null;
     }
 
     @Override
@@ -38,21 +39,21 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

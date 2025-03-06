@@ -1,5 +1,6 @@
 package com.example.lpiloguebe.config;
 
+import com.example.lpiloguebe.filter.JWTUtil;
 import com.example.lpiloguebe.filter.LoginFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,15 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
 
-    // AuthenticationManager 주입 위한 빈 등록
+    private final JWTUtil jwtUtil;
+
+//     AuthenticationManager 주입 위한 빈 등록
     @Bean
-    public AuthenticationManager getAuthenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
@@ -54,19 +59,19 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/api/auth/signin", "/api/auth/signup").permitAll()
+                        .requestMatchers("/", "/login", "/api/auth/signup").permitAll()
                         .anyRequest().authenticated()
                 );
 
+        // 필터 추가
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         // 세션 stateless 설정
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
 
-        // 필터 추가
-        http
-                .addFilterAt(new LoginFilter(getAuthenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
