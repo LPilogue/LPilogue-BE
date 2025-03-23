@@ -1,8 +1,11 @@
-name: Docker Image CD
+name: CD Pipeline
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_run:
+    # CI Pipeline이 실행된 후 실행
+    workflows: [ "CI Pipeline" ]
+    types:
+      - completed
 
 
 jobs:
