@@ -22,15 +22,15 @@ public class Diary {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // 외래키를 가지는 쪽이 JoinColumn
+    // 외래키를 가지는 쪽이 연관관계의 주인, JoinColumn 가짐
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToMany(mappedBy = "diary_song_id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Diary_song> diary_songs = new ArrayList<>();
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Diary_song> diarySongList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "diary_cocktail_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private Diary_cocktail diary_cocktail;
 
     @Builder
@@ -38,6 +38,10 @@ public class Diary {
         this.content = content;
         this.createdAt = createdAt;
         this.user = user;
-
     }
+
+    public void addDiary_cocktail(Diary_cocktail diary_cocktail) {
+        this.diary_cocktail = diary_cocktail;
+    }
+
 }

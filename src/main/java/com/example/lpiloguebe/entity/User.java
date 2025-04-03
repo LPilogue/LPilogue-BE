@@ -27,11 +27,11 @@ public class User extends Base{
     private String nickname;
 
     // mappedBy에는 반대쪽 entity가 나를 참조하는 필드명이 들어감
-    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaryList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user_id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private User_prefer user_prefer;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private User_prefer userPrefer;
 
     @Builder
     public User(String username, String password, String nickname) {

@@ -33,9 +33,9 @@ public class SongController {
         return new ResponseEntity<>(songId + " 좋아요 설정 완료", HttpStatus.OK);
     }
 
-    // 싫어요한 곡 가져오기
-    @GetMapping("/dislike")
-    public ResponseEntity<?> getDislikeSong() {
-        return new ResponseEntity<>(songService.getDislikeSong(), HttpStatus.OK);
-    }
+//    // 싫어요한 곡 가져오기
+//    @GetMapping("/dislike")
+//    public ResponseEntity<?> getDislikeSong() {
+//        return new ResponseEntity<>(songService.getDislikeSong(), HttpStatus.OK);
+//    }
 }

@@ -31,7 +31,7 @@ public class User_prefer extends Base{
     @Column(nullable=false)
     private String artist;
 
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 }

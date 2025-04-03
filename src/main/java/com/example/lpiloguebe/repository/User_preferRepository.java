@@ -1,10 +1,9 @@
 package com.example.lpiloguebe.repository;
 
-import com.example.lpiloguebe.entity.Cocktail;
+import com.example.lpiloguebe.entity.User_prefer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CocktailRepository extends JpaRepository<Cocktail, Long> {
-    Cocktail findByName(String cocktailName);
+public interface User_preferRepository extends JpaRepository<User_prefer, Long> {
 }

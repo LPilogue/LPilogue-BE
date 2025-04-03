@@ -30,8 +30,8 @@ public class Cocktail extends Base {
     @Column
     private String imagePath;
 
-    @OneToMany(mappedBy = "cocktailData", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Diary_cocktail> diary_cocktails=new ArrayList<>();
+    @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Diary_cocktail> diaryCocktailList=new ArrayList<>();
 
     @Builder
     public Cocktail(String name, String color, String ingredients, String description, String imagePath) {

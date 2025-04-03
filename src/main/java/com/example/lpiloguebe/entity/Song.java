@@ -35,8 +35,8 @@ public class Song extends Base {
     @Column(nullable = false)
     private String artist;
 
-    @OneToMany(mappedBy = "song_id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Diary_song> diary_songs = new ArrayList<>();
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Diary_song> diarySongList = new ArrayList<>();
 
     @Builder
     public Song(String name, String songURI, SongType type, int isLiked, String imagePath, String artist) {
