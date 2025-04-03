@@ -6,10 +6,8 @@ import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.*;
 import com.example.lpiloguebe.enumeration.SongType;
 import com.example.lpiloguebe.repository.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -80,16 +78,15 @@ public class DiaryService {
         diaryRequestDTO.getSongs()
                 .forEach(songRequestDTO -> {
                     Song song= Song.builder()
-                            .diary(diary)
                             .artist(songRequestDTO.getArtist())
-                            .filePath(songRequestDTO.getFilePath())
+                            .imagePath(songRequestDTO.getImagePath())
                             .isLiked(0)
                             .name(songRequestDTO.getName())
 //                            .songURI(songRequestDTO.getSongURI())
                             .type(songRequestDTO.getType())
                             .build();
                     log.info("노래 정보: {}", song.toString());
-                    diary.getSongList().add(song);
+                    diary.getDiary_songs().add();
                     log.info("일기 {}의 노래 리스트: {}", diary.getDiaryId(), diary.getSongList());
                     songRepository.save(song);
                     log.info("노래 저장 완료");
@@ -132,7 +129,7 @@ public class DiaryService {
                     .songName(mainSong.map(Song::getName).orElse(null))
                     .songURI(mainSong.map(Song::getSongURI).orElse(null))
                     .artist(mainSong.map(Song::getArtist).orElse(null))
-                    .songFilePath(mainSong.map(Song::getFilePath).orElse(null))
+                    .songFilePath(mainSong.map(Song::getImagePath).orElse(null))
                     .cocktailName(diary.getCocktail().getCocktailData().getName())
                     .cocktailFilePath(diary.getCocktail().getCocktailData().getFilePath())
                     .build();

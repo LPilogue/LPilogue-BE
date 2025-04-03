@@ -15,7 +15,7 @@ public class User extends Base{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @Column(nullable = false)
     private String username;
@@ -23,33 +23,21 @@ public class User extends Base{
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String email;
-
     @Column(nullable = false)
-    private String name;
+    private String nickname;
 
-    @Column
-    private String phone;
-
-    @Column(nullable = false)
-    private Gender gender;
-
-    @Column(nullable = false)
-    private int age;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // mappedBy에는 반대쪽 entity가 나를 참조하는 필드명이 들어감
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaryList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private User_prefer user_prefer;
+
     @Builder
-    public User(String username, String password, String email, String name, String phone, Gender gender, int age) {
+    public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.name = name;
-        this.phone = phone;
-        this.gender = gender;
-        this.age = age;
+        this.nickname=nickname;
     }
 
 }

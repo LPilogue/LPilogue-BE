@@ -4,6 +4,9 @@ import com.example.lpiloguebe.enumeration.SongType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
@@ -12,7 +15,7 @@ public class Song extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long songId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -27,23 +30,22 @@ public class Song extends Base {
     private int isLiked;
 
     @Column(nullable = false)
-    private String filePath;
+    private String imagePath;
 
     @Column(nullable = false)
     private String artist;
 
-    @JoinColumn(name = "diaryId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Diary diary;
+    @OneToMany(mappedBy = "song_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Diary_song> diary_songs = new ArrayList<>();
 
     @Builder
-    public Song(String name, String songURI, SongType type, int isLiked, Diary diary, String filePath, String artist) {
+    public Song(String name, String songURI, SongType type, int isLiked, String imagePath, String artist) {
+
         this.name = name;
         this.songURI = songURI;
         this.type = type;
         this.isLiked = isLiked;
-        this.diary = diary;
-        this.filePath = filePath;
+        this.imagePath = imagePath;
         this.artist = artist;
     }
 

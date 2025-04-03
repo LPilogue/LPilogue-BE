@@ -10,7 +10,7 @@ public class SongRequestDTO {
     private String name;
     private String artist;
     private String songURI;
-    private String filePath;
+    private String imagePath;
     private int isLiked;
     private SongType type;
 }
