@@ -7,6 +7,7 @@ import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.Diary;
 import com.example.lpiloguebe.service.DiaryService;
 import com.example.lpiloguebe.service.Diary_cocktailService;
+import com.example.lpiloguebe.service.Diary_songService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,8 @@ public class DiaryController {
 
     private final Diary_cocktailService diary_cocktailService;
 
+    private final Diary_songService diary_songService;
+
     @PostMapping("")
     public ResponseEntity<?> createDiary(@RequestBody DiaryRequestDTO diaryRequestDTO) {
 
@@ -30,7 +33,8 @@ public class DiaryController {
             return new ResponseEntity<>("입력한 파라미터가 없습니다.", HttpStatus.BAD_REQUEST);
         }
         Diary diary = diaryService.createDiary(diaryRequestDTO);
-        diary_cocktailService.addCocktailToDiary(diary, diaryRequestDTO);
+        diary = diary_cocktailService.addCocktailToDiary(diary, diaryRequestDTO);
+        diary_songService.addSongToDiary(diary, diaryRequestDTO);
         return new ResponseEntity<>("일기 작성 완료", HttpStatus.OK);
     }
 
