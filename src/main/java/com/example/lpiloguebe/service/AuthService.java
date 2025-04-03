@@ -29,11 +29,7 @@ public class AuthService {
         User user = User.builder()
                 .username(signupDTO.getUsername())
                 .password(bCryptPasswordEncoder.encode(signupDTO.getPassword()))
-                .age(signupDTO.getAge())
-                .email(signupDTO.getEmail())
-                .phone(signupDTO.getPhone())
-                .gender(signupDTO.getGender())
-                .name(signupDTO.getName())
+                .nickname(signupDTO.getNickname())
                 .build();
 
         // user 저장

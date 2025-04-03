@@ -1,5 +1,6 @@
 package com.example.lpiloguebe.config;
 
+import com.example.lpiloguebe.filter.JWTFilter;
 import com.example.lpiloguebe.filter.JWTUtil;
 import com.example.lpiloguebe.filter.LoginFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,9 +64,14 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 );
 
-        // 필터 추가
+        // 로그인 필터 추가
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        // jwt 필터 추가
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+
         // 세션 stateless 설정
         http
                 .sessionManagement((session) -> session

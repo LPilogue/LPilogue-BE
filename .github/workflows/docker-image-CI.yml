@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI Pipeline
 
 on:
   push:
@@ -13,7 +13,8 @@ jobs:
 
     steps:
       # 현재 레포지토리 가져오기
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
       # Java 17 환경 설정
     - name: Set up JDK 17
