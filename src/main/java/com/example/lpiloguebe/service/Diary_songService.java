@@ -42,7 +42,7 @@ public class Diary_songService {
                             .imagePath(songRequestDTO.getImagePath())
                             .isLiked(0)
                             .name(songRequestDTO.getName())
-//                            .songURI(songRequestDTO.getSongURI())
+                            .songURI(songRequestDTO.getSongURI())
                             .type(songRequestDTO.getType())
                             .build();
                     log.info("노래 정보: {}", song.toString());

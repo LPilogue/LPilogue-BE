@@ -1,10 +1,7 @@
 package com.example.lpiloguebe.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Getter
@@ -28,10 +25,20 @@ public class User_prefer extends Base{
     @Column(nullable=false)
     private int lonely;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String artist;
 
     @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @Builder
+    public User_prefer(int happy, int sad, int stressed, int lonely, String artist, User user) {
+        this.happy = happy;
+        this.sad = sad;
+        this.stressed = stressed;
+        this.lonely = lonely;
+        this.artist = artist;
+        this.user = user;
+    }
 }

@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
-@ToString
 public class User extends Base{
 
     @Id
@@ -38,6 +37,10 @@ public class User extends Base{
         this.username = username;
         this.password = password;
         this.nickname=nickname;
+    }
+
+    public void addUserPrefer(User_prefer userPrefer) {
+        this.userPrefer = userPrefer;
     }
 
 }
