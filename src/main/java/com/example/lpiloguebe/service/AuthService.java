@@ -34,12 +34,6 @@ public class AuthService {
 
     public void signup(SignupDTO signupDTO){
 
-
-        // username 중복 체크
-        if (userRepository.findByUsername(signupDTO.getUsername()) != null) {
-            throw new UsernameAlreadyExistsException("이미 존재하는 username입니다.");
-        }
-
         // user 객체 생성
         User user = User.builder()
                 .username(signupDTO.getUsername())
@@ -77,7 +71,7 @@ public class AuthService {
 
         // user가 없으면 예외 처리
         if (user == null) {
-            throw new UsernameNotFoundException("username이 존재하지 않습니다.");
+            throw new UsernameNotFoundException("사용자 정보가 없습니다.");
         }
 
         // 비밀번호 확인

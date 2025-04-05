@@ -1,13 +1,16 @@
 package com.example.lpiloguebe.service;
 
-import com.example.lpiloguebe.dto.DateDTO;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.*;
 import com.example.lpiloguebe.enumeration.SongType;
+import com.example.lpiloguebe.exception.IllegalDateException;
+import com.example.lpiloguebe.exception.IllegalDiaryException;
+import com.example.lpiloguebe.exception.UsernameNotFoundException;
 import com.example.lpiloguebe.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,12 +35,15 @@ public class DiaryService {
      */
     public Diary createDiary(DiaryRequestDTO diaryRequestDTO) {
 
-        // 로그인 구현 끝나면 수정
-        User user = userRepository.findByUsername("test");
-        if (user == null) {
-            throw new IllegalArgumentException("사용자 정보가 없습니다.");
+        // SecurityContextHolder에서 인증된 사용자 정보 가져오기
+        String username= SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username);
+
+        // 작성 날짜가 3일 이상 전인지 확인
+        boolean isValidate = validateCreatedAt(diaryRequestDTO.getCreatedAt());
+        if(isValidate) {
+            throw new IllegalDateException("일기 작성 날짜는 3일 이내여야 합니다.");
         }
-        log.info("유저 정보: {}", user.toString());
 
         Diary diary=Diary.builder()
                 .content(diaryRequestDTO.getContent())
@@ -53,13 +59,20 @@ public class DiaryService {
         return diary;
     }
 
+    public boolean validateCreatedAt(LocalDateTime createdAt) {
+        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
+
+        return createdAt.isBefore(threeDaysAgo);
+    }
+
+
     /**
      * 일기 삭제
      * @param diaryId
      */
     public void deleteDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new IllegalArgumentException("일기 정보가 없습니다."));
+                .orElseThrow(() -> new IllegalDiaryException("존재하지 않는 일기입니다."));
         log.info("삭제할 일기 정보: {}", diary.toString());
         diaryRepository.delete(diary);
         log.info("일기 삭제 완료");
@@ -67,16 +80,16 @@ public class DiaryService {
 
     /**
      * 일기 조회
-     * @param dateDTO
+     * @param year, month
      * @return List<DiaryResponseDTO>
      */
 
-    public List<DiaryResponseDTO> getDiaryList(DateDTO dateDTO) {
+    public List<DiaryResponseDTO> getDiaryList(int year, int month) {
         // 년도, 월로 일기 리스트 조회
-        LocalDateTime startDate = LocalDate.of(dateDTO.getYear(), dateDTO.getMonth(), 1)
+        LocalDateTime startDate = LocalDate.of(year, month, 1)
                 .atStartOfDay();
-        LocalDateTime endDate = LocalDate.of(dateDTO.getYear(), dateDTO.getMonth(), 1)
-                .withDayOfMonth(LocalDate.of(dateDTO.getYear(), dateDTO.getMonth(), 1)
+        LocalDateTime endDate = LocalDate.of(year, month, 1)
+                .withDayOfMonth(LocalDate.of(year, month, 1)    // 해당 월의 마지막 날 몇 일인지 계산
                         .lengthOfMonth()).atTime(23, 59, 59, 999999999); // 마지막 날 23:59:59.999999999
 
         List<Diary> diaryList = diaryRepository.findDiariesByDateRange(startDate, endDate);
