@@ -4,18 +4,12 @@ import com.example.lpiloguebe.dto.SigninDTO;
 import com.example.lpiloguebe.dto.SignupDTO;
 import com.example.lpiloguebe.entity.User;
 import com.example.lpiloguebe.entity.User_prefer;
-import com.example.lpiloguebe.exception.BadCredentialsException;
-import com.example.lpiloguebe.exception.UsernameAlreadyExistsException;
-import com.example.lpiloguebe.exception.UsernameNotFoundException;
+import com.example.lpiloguebe.exception.*;
 import com.example.lpiloguebe.filter.JWTUtil;
 import com.example.lpiloguebe.repository.UserRepository;
 import com.example.lpiloguebe.repository.User_preferRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,12 +65,12 @@ public class AuthService {
 
         // user가 없으면 예외 처리
         if (user == null) {
-            throw new UsernameNotFoundException("사용자 정보가 없습니다.");
+            throw new UsernameNotFoundException();
         }
 
         // 비밀번호 확인
         if (!bCryptPasswordEncoder.matches(signinDTO.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+            throw new BadCredentialsException();
         }
 
         // 1 시간 동안 유효한 토큰 생성
@@ -87,8 +81,84 @@ public class AuthService {
     public void checkUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
-            throw new UsernameAlreadyExistsException("이미 존재하는 ID 입니다.");
+            throw new UsernameAlreadyExistsException();
         }
+    }
+
+    public void checkUsernamePassword(String username, String password) {
+
+        // username 유효성 체크
+        boolean usernameValid =true;
+
+        // 길이가 6자 이하인지 확인
+        if (username == null || username.length() > 6) {
+            usernameValid =false;
+        }
+
+        // 영문 대문자 포함 여부
+        boolean hasUpperCase = false;
+        // 영문 소문자 포함 여부
+        boolean hasLowerCase = false;
+        // 숫자 포함 여부
+        boolean hasDigit = false;
+
+        for (char c : username.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUpperCase = true;
+            } else if (Character.isLowerCase(c)) {
+                hasLowerCase = true;
+            } else if (Character.isDigit(c)) {
+                hasDigit = true;
+            }
+        }
+
+        // 대문자, 소문자, 숫자가 모두 포함되어 있어야 함
+        if(!(hasUpperCase && hasLowerCase && hasDigit)) {
+            usernameValid =false;
+        }
+
+        if(!usernameValid) {
+            throw new InvalidUsernameException();
+        }
+
+        // 비밀번호 유효성 체크
+        boolean passwordValid = true;
+
+        // 길이가 8자 이상인지 확인
+        if (password == null || password.length() < 8) {
+            passwordValid = false;
+        }
+
+        // 영문 대문자 포함 여부
+        hasUpperCase = false;
+        // 영문 소문자 포함 여부
+        hasLowerCase = false;
+        // 숫자 포함 여부
+        hasDigit = false;
+        // 특수문자 포함 여부
+        boolean hasSpecialChar = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUpperCase = true;
+            } else if (Character.isLowerCase(c)) {
+                hasLowerCase = true;
+            } else if (Character.isDigit(c)) {
+                hasDigit = true;
+            } else if (!Character.isLetterOrDigit(c)) {
+                hasSpecialChar = true;
+            }
+        }
+
+        // 대문자, 소문자, 숫자, 특수문자가 모두 포함되어 있어야 함
+        if (!(hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar)) {
+            passwordValid = false;
+        }
+
+        if (!passwordValid) {
+            throw new InvalidPasswordException();
+        }
+
     }
 }
 
