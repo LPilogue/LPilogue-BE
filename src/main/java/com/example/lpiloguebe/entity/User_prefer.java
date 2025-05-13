@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class User_prefer extends Base{
 
     @Id

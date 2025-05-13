@@ -9,7 +9,6 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 @Getter
 public class Song extends Base {
 
