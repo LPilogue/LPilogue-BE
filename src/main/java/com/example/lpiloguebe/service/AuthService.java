@@ -33,6 +33,7 @@ public class AuthService {
                 .username(signupDTO.getUsername())
                 .password(bCryptPasswordEncoder.encode(signupDTO.getPassword()))
                 .nickname(signupDTO.getNickname())
+                .city(signupDTO.getCity())
                 .build();
 
         // user 저장
