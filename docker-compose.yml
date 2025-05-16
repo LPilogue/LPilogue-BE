@@ -30,7 +30,7 @@ services:
     depends_on:
       - lpilogue-db
 
-  lpilogue-db:
+  mysql-app:
     container_name: lpilogue-db
     image: mysql:8
     restart: always
