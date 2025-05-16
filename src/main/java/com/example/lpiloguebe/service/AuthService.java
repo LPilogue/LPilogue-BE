@@ -83,5 +83,12 @@ public class AuthService {
         return jwtUtil.generateToken(user.getUsername(), 3600000);
 
     }
+
+    public void checkUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            throw new UsernameAlreadyExistsException("이미 존재하는 ID 입니다.");
+        }
+    }
 }
 
