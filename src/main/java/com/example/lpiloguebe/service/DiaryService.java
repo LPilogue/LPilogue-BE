@@ -4,9 +4,8 @@ import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.*;
 import com.example.lpiloguebe.enumeration.SongType;
-import com.example.lpiloguebe.exception.IllegalDateException;
-import com.example.lpiloguebe.exception.IllegalDiaryException;
-import com.example.lpiloguebe.exception.UsernameNotFoundException;
+import com.example.lpiloguebe.exception.InvalidDateException;
+import com.example.lpiloguebe.exception.DiaryNotFoundException;
 import com.example.lpiloguebe.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +41,7 @@ public class DiaryService {
         // 작성 날짜가 3일 이상 전인지 확인
         boolean isValidate = validateCreatedAt(diaryRequestDTO.getCreatedAt());
         if(isValidate) {
-            throw new IllegalDateException("일기 작성 날짜는 3일 이내여야 합니다.");
+            throw new InvalidDateException();
         }
 
         Diary diary=Diary.builder()
@@ -72,7 +71,7 @@ public class DiaryService {
      */
     public void deleteDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new IllegalDiaryException("존재하지 않는 일기입니다."));
+                .orElseThrow(() -> new DiaryNotFoundException());
         log.info("삭제할 일기 정보: {}", diary.toString());
         diaryRepository.delete(diary);
         log.info("일기 삭제 완료");

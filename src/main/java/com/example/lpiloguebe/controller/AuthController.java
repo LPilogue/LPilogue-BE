@@ -35,10 +35,16 @@ public class AuthController {
                 .body("로그인 성공");
     }
 
-    @GetMapping("/check-username")
+    @GetMapping("/exists-username")
     public ResponseEntity<?> checkUsername(@RequestParam String username) {
         authService.checkUsername(username);
         return new ResponseEntity<>("사용 가능한 ID 입니다.", HttpStatus.OK);
 
+    }
+
+    @GetMapping("/check-username-password")
+    public ResponseEntity<?> checkUsernamePassword(@RequestParam String username, @RequestParam String password) {
+        authService.checkUsernamePassword(username, password);
+        return new ResponseEntity<>("사용 가능한 ID & 비밀번호 입니다.", HttpStatus.OK);
     }
 }
