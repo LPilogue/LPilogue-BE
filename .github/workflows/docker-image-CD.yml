@@ -36,6 +36,10 @@ jobs:
         - name: Stop lpilogue-db
           run: docker stop lpilogue-db || true && docker rm lpilogue-db || true
 
+        # lpilogue-be가 실행중인 경우 중지
+        - name: Stop lpilogue-be
+          run: docker stop lpilogue-be || true && docker rm lpilogue-be || true
+
         # spring-boot-app만 다시 실행
         - name: Run Docker compose
           run: docker compose rm -f spring-boot-app && docker compose up -d spring-boot-app
