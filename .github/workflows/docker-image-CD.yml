@@ -32,8 +32,12 @@ jobs:
           env:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
+        # lpilogue-db가 실행중인 경우 중지
+        - name: Stop lpilogue-db
+          run: docker stop lpilogue-db || true && docker rm lpilogue-db || true
 
-        # lpilogue-be만 다시 실행
-        - name: Run Docker container
-          run: docker compose rm -f spring-boot-app && docker compose up -d --no-deps spring-boot-app
+        # spring-boot-app만 다시 실행
+        - name: Run Docker compose
+          run: docker compose rm -f spring-boot-app && docker compose up -d spring-boot-app
+
 
