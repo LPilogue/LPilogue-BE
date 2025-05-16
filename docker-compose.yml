@@ -28,7 +28,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: dnwnswls2501
       TZ: Asia/Seoul
     depends_on:
-      - lpilogue-db
+      - mysql-app
 
   mysql-app:
     container_name: lpilogue-db
@@ -54,4 +54,4 @@ services:
     ports:
       - "59999:5000"
     depends_on:
-      - lpilogue-db
+      - mysql-app
