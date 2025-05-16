@@ -35,4 +35,5 @@ jobs:
 
         # lpilogue-be만 다시 실행
         - name: Run Docker container
-          run: docker compose rm -f spring-boot-app && docker compose up -d spring-boot-app
+          run: docker compose rm -f spring-boot-app && docker compose up -d --no-deps spring-boot-app
+
