@@ -32,12 +32,7 @@ jobs:
           env:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
-        # 기존에 실행중인 Docker 컨테이너 삭제
-        - name: Stop and remove Docker container
-          run: docker stop lpilogue-be && docker rm lpilogue-be || true
 
-        # Docker 컨테이너 실행
+        # lpilogue-be만 다시 실행
         - name: Run Docker container
-          run: docker run -d -p 8080:8080 --name lpilogue-be $DOCKER_USERNAME/lpilogue-be:latest
-          env:
-            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          run: docker compose rm -f lpilogue-be && docker compose up -d lpilogue-be
