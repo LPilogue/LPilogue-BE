@@ -1,9 +1,10 @@
 package com.example.lpiloguebe.service;
 
+import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.SongResponseDTO;
 import com.example.lpiloguebe.entity.Song;
 import com.example.lpiloguebe.enumeration.SongType;
-import com.example.lpiloguebe.exception.SongNotFoundException;
+import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.repository.SongRepository;
 import com.example.lpiloguebe.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -26,7 +27,7 @@ public class SongService {
     @Transactional
     public void updateMainSong(Long songId) {
         Song song = songRepository.findById(songId)
-                .orElseThrow(() -> new SongNotFoundException());
+                .orElseThrow(() -> new GeneralException(ErrorStatus.SONG_NOT_FOUND));
 
         song.updateType(SongType.MAIN);
         log.info("{} 대표곡 설정 완료", song.toString());
@@ -35,7 +36,7 @@ public class SongService {
     @Transactional
     public void updateLikeSong(Long songId) {
         Song song = songRepository.findById(songId)
-                .orElseThrow(() -> new SongNotFoundException());
+                .orElseThrow(() -> new GeneralException(ErrorStatus.SONG_NOT_FOUND));
 
         song.updateIsLiked(1);
         log.info("{} 좋아요 설정 완료", song.toString());

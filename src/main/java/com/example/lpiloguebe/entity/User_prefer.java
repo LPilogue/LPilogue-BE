@@ -1,6 +1,6 @@
 package com.example.lpiloguebe.entity;
 
-import com.example.lpiloguebe.dto.UserUpdateDTO;
+import com.example.lpiloguebe.dto.UserRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,7 +42,7 @@ public class User_prefer extends Base{
         this.user = user;
     }
 
-    public void setUserPrefer(UserUpdateDTO userUpdateDTO) {
+    public void setUserPrefer(UserRequestDTO.UserUpdateDTO userUpdateDTO) {
         this.happy = userUpdateDTO.getHappy();
         this.sad = userUpdateDTO.getSad();
         this.stressed = userUpdateDTO.getStressed();
