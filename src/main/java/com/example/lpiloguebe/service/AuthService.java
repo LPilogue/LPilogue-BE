@@ -1,10 +1,10 @@
 package com.example.lpiloguebe.service;
 
-import com.example.lpiloguebe.dto.SigninDTO;
-import com.example.lpiloguebe.dto.SignupDTO;
+import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
+import com.example.lpiloguebe.dto.UserRequestDTO;
 import com.example.lpiloguebe.entity.User;
 import com.example.lpiloguebe.entity.User_prefer;
-import com.example.lpiloguebe.exception.*;
+import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.filter.JWTUtil;
 import com.example.lpiloguebe.repository.UserRepository;
 import com.example.lpiloguebe.repository.User_preferRepository;
@@ -26,7 +26,7 @@ public class AuthService {
 
     private final JWTUtil jwtUtil;
 
-    public void signup(SignupDTO signupDTO){
+    public User signup(UserRequestDTO.SignupDTO signupDTO){
 
         // user 객체 생성
         User user = User.builder()
@@ -56,22 +56,19 @@ public class AuthService {
         savedUser.addUserPrefer(user_prefer);
 
         log.info("User {} 저장 완료 {}", savedUser.getUsername(), savedUser.toString());
+        return savedUser;
 
     }
 
-    public String signin(SigninDTO signinDTO) {
+    public String signin(UserRequestDTO.SigninDTO signinDTO) {
 
         // username으로 user 조회
-        User user = userRepository.findByUsername(signinDTO.getUsername());
-
-        // user가 없으면 예외 처리
-        if (user == null) {
-            throw new UsernameNotFoundException();
-        }
+        User user = userRepository.findByUsername(signinDTO.getUsername())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         // 비밀번호 확인
         if (!bCryptPasswordEncoder.matches(signinDTO.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException();
+            throw new GeneralException(ErrorStatus.INVALID_PASSWORD);
         }
 
         // 1 시간 동안 유효한 토큰 생성
@@ -80,10 +77,10 @@ public class AuthService {
     }
 
     public void checkUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            throw new UsernameAlreadyExistsException();
-        }
+        userRepository.findByUsername(username).ifPresent(u -> {
+            throw new GeneralException(ErrorStatus.USERNAME_ALREADY_EXISTS);
+        });
+
     }
 
     public void checkUsernamePassword(String username, String password) {
@@ -119,7 +116,7 @@ public class AuthService {
         }
 
         if(!usernameValid) {
-            throw new InvalidUsernameException();
+            throw new GeneralException(ErrorStatus.INVALID_USERNAME);
         }
 
         // 비밀번호 유효성 체크
@@ -157,7 +154,7 @@ public class AuthService {
         }
 
         if (!passwordValid) {
-            throw new InvalidPasswordException();
+            throw new GeneralException(ErrorStatus.INVALID_PASSWORD);
         }
 
     }

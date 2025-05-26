@@ -1,6 +1,6 @@
 package com.example.lpiloguebe.controller;
 
-import com.example.lpiloguebe.dto.UserUpdateDTO;
+import com.example.lpiloguebe.dto.UserRequestDTO;
 import com.example.lpiloguebe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ public class UserController {
     private final UserService userService;
 
     @PutMapping("/")
-    public ResponseEntity<?> updateUser(@RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<?> updateUser(@RequestBody UserRequestDTO.UserUpdateDTO userUpdateDTO) {
         userService.updateUser(userUpdateDTO);
         return new ResponseEntity<>("프로필 수정 완료", HttpStatus.OK);
     }
