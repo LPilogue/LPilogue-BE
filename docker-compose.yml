@@ -10,20 +10,23 @@ services:
       BE_PORT: "8080"
       REC_HOST: "lpilogue-rec"
       REC_PORT: "5000"
-
+    depends_on:
+      - spring-boot-app
+      - flask-app
+      - cloudflare-app
 
   spring-boot-app:
     container_name: lpilogue-be
     restart: on-failure
     image: hadoroke/lpilogue-be:latest
     ports:
-      - "52781:8080"
+      - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: "prod"
       SPRING_DATASOURCE_URL: jdbc:mysql://lpilogue-db:3306/lpilogue?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
       #      SPRING_DATASOURCE_URL: jdbc:mysql://lpilogue-db.c5msg0qqmmcw.ap-northeast-2.rds.amazonaws.com:3306/lpilogue?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: dnwnswls2501
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       TZ: Asia/Seoul
     depends_on:
       - mysql-app
@@ -33,10 +36,10 @@ services:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_DATABASE: lpilogue
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: dnwnswls2501
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
       TZ: Asia/Seoul
     ports:
       - "3306:3306"
@@ -49,8 +52,17 @@ services:
     image: hadoroke/lpilogue-rec:latest
     environment:
       TZ: Asia/Seoul
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      FILE_SERVER_URL: ${FILE_SERVER_URL}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY}
     ports:
-      - "59999:5000"
+      - "5000:5000"
     depends_on:
       - mysql-app
 
@@ -58,4 +70,4 @@ services:
     container_name: cloudflare
     restart: unless-stopped
     image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate run --token eyJhIjoiM2FhNmJmMjU1NzdmMDQ1OThhMjYyMGEwMzg4OWVkMzYiLCJ0IjoiM2EzNTk5MTItNmZhYi00OGM0LWIxMDktODRhOTFjMzVmN2MwIiwicyI6Ik9UVm1NV1l3TW1RdE9XWTNOQzAwWkdRd0xXRTJZalV0TldSaFpESTBZek01TjJGbSJ9
+    command: tunnel --no-autoupdate --protocol http2 run --token eyJhIjoiM2FhNmJmMjU1NzdmMDQ1OThhMjYyMGEwMzg4OWVkMzYiLCJ0IjoiM2EzNTk5MTItNmZhYi00OGM0LWIxMDktODRhOTFjMzVmN2MwIiwicyI6Ik9UVm1NV1l3TW1RdE9XWTNOQzAwWkdRd0xXRTJZalV0TldSaFpESTBZek01TjJGbSJ9
