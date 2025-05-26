@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/songs")
+@RequestMapping("/api/be/songs")
 @RequiredArgsConstructor
 public class SongController {
 
