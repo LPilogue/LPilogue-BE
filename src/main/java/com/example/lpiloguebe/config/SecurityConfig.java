@@ -42,7 +42,14 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         // swagger 접근 허용
         return (web) -> web.ignoring()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**");
+                .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/webjars/**",
+                        "swagger-ui/**",
+                        "v3/api-docs/**");
     }
 
     @Bean
