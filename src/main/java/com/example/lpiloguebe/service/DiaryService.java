@@ -1,11 +1,11 @@
 package com.example.lpiloguebe.service;
 
+import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.*;
 import com.example.lpiloguebe.enumeration.SongType;
-import com.example.lpiloguebe.exception.InvalidDateException;
-import com.example.lpiloguebe.exception.DiaryNotFoundException;
+import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +36,13 @@ public class DiaryService {
 
         // SecurityContextHolder에서 인증된 사용자 정보 가져오기
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         // 작성 날짜가 3일 이상 전인지 확인
         boolean isValidate = validateCreatedAt(diaryRequestDTO.getCreatedAt());
         if(isValidate) {
-            throw new InvalidDateException();
+            throw new GeneralException(ErrorStatus.INVALID_Date);
         }
 
         Diary diary=Diary.builder()
@@ -71,7 +72,7 @@ public class DiaryService {
      */
     public void deleteDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new DiaryNotFoundException());
+                .orElseThrow(() -> new GeneralException(ErrorStatus.DIARY_NOT_FOUND));
         log.info("삭제할 일기 정보: {}", diary.toString());
         diaryRepository.delete(diary);
         log.info("일기 삭제 완료");

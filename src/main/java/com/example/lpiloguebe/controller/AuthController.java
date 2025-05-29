@@ -1,7 +1,9 @@
 package com.example.lpiloguebe.controller;
 
-import com.example.lpiloguebe.dto.SigninDTO;
-import com.example.lpiloguebe.dto.SignupDTO;
+import com.example.lpiloguebe.apiPayload.code.ApiResponse;
+import com.example.lpiloguebe.dto.UserRequestDTO;
+import com.example.lpiloguebe.dto.UserResponseDTO;
+import com.example.lpiloguebe.entity.User;
 import com.example.lpiloguebe.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -17,22 +19,24 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupDTO signupDTO) {
-        authService.signup(signupDTO);
-        return new ResponseEntity<>("회원가입 완료", HttpStatus.OK);
+    public ApiResponse<UserResponseDTO.signupResultDTO> signup(@RequestBody UserRequestDTO.SignupDTO signupDTO) {
+        User user = authService.signup(signupDTO);
+        return ApiResponse.onSuccess(
+                UserResponseDTO.signupResultDTO.builder()
+                .userId(user.getId())
+                .createdAt(user.getCreatedAt())
+                .build());
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody SigninDTO signinDTO) {
+    public ApiResponse<UserResponseDTO.signInResultDTO> signin(@RequestBody UserRequestDTO.SigninDTO signinDTO) {
         String jwtToken = authService.signin(signinDTO);
 
-        // JWT 토큰을 HTTP 응답 헤더에 추가
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + jwtToken);
+        return ApiResponse.onSuccess(
+                UserResponseDTO.signInResultDTO.builder()
+                        .accessToken("Bearer " + jwtToken)
+                        .build());
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body("로그인 성공");
     }
 
     @GetMapping("/exists-username")
