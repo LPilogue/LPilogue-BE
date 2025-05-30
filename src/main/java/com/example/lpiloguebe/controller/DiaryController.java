@@ -113,7 +113,7 @@ public class DiaryController {
 
 
     @GetMapping("/mostFrequentEmotion")
-    @Operation(summary = "가장 많이 느낀 감정 조회", description = "사용자가 작성한 일기 중 가장 많이 느낀 감정을 조회할 수 있습니다.")
+    @Operation(summary = "특정 연도에 가장 많이 느낀 감정 조회", description = "사용자가 특정 연도에 작성한 일기 중 가장 많이 느낀 감정을 조회할 수 있습니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "가장 많이 느낀 감정 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
