@@ -22,13 +22,13 @@ public class UserService {
     private final User_preferRepository user_preferRepository;
 
     @Transactional
-    public void updateUser(UserRequestDTO.UserUpdateDTO userUpdateDTO) {
+    public User_prefer updateUser(UserRequestDTO.UserUpdateDTO userUpdateDTO) {
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
         User_prefer userPrefer = user_preferRepository.findByUser(user);
         log.info("UserPrefer: {}", userPrefer.toString());
         userPrefer.setUserPrefer(userUpdateDTO);
-        user_preferRepository.save(userPrefer);
+        return user_preferRepository.save(userPrefer);
     }
 }

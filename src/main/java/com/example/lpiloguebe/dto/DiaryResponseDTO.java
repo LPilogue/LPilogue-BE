@@ -1,30 +1,57 @@
 package com.example.lpiloguebe.dto;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+
 public class DiaryResponseDTO {
-    private LocalDateTime createdAt;
-    private String content;
-    private String songName;
-    private String songURI;
-    private String artist;
-    private String songImagePath;
-    private String cocktailName;
-    private String cocktailImagePath;
+
 
     @Builder
-    public DiaryResponseDTO(LocalDateTime createdAt, String content, String songName, String songURI, String artist, String songImagePath, String cocktailName, String cocktailImagePath) {
-        this.createdAt = createdAt;
-        this.content = content;
-        this.songName = songName;
-        this.songURI = songURI;
-        this.artist = artist;
-        this.songImagePath = songImagePath;
-        this.cocktailName = cocktailName;
-        this.cocktailImagePath = cocktailImagePath;
+    @Getter
+    public static class getDiaryDetailDTO {
+        private LocalDateTime createdAt;
+        private String content;
+        // 대표 곡만
+        private String songName;
+        private String songURI;
+        private String artist;
+        private String songImagePath;
+        private String cocktailName;
+        private String cocktailImagePath;
+    }
+
+    @Builder
+    @Getter
+    public static class getDiaryPreviewDTO {
+        private LocalDateTime createdAt; // 일기 작성 시간
+        private String songImagePath; // 대표 곡 이미지 경로
+    }
+
+    @Builder
+    @Getter
+    public static class getDiaryPreviewListDTO {
+        private List<getDiaryPreviewDTO> diaryPreviewList; // 일기 리스트
+        private int totalElements; // 전체 일기 개수
+    }
+
+
+
+    @Builder
+    @Getter
+    public static class deleteDiaryResultDTO {
+        private Long diaryId;
+        private String message;
+    }
+
+    @Builder
+    @Getter
+    public static class createDiaryResultDTO {
+        private Long diaryId;
+        private LocalDateTime createdAt;
+        private String message;
     }
 }

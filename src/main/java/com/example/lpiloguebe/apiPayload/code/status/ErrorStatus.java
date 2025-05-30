@@ -29,7 +29,7 @@ public enum ErrorStatus implements ErrorCode {
 
     // song
     SONG_NOT_FOUND(HttpStatus.NOT_FOUND, "SONG-001", "해당 노래를 찾을 수 없습니다."),
-
+    MAIN_SONG_NOT_FOUND(HttpStatus.NOT_FOUND, "SONG-002", "메인 노래가 없습니다."),
 
     // diary
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "DIARY-001", "해당 다이어리를 찾을 수 없습니다."),
