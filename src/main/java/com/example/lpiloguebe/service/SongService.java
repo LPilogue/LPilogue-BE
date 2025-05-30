@@ -25,37 +25,31 @@ public class SongService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void updateMainSong(Long songId) {
+    public Song updateMainSong(Long songId) {
         Song song = songRepository.findById(songId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.SONG_NOT_FOUND));
 
         song.updateType(SongType.MAIN);
-        log.info("{} 대표곡 설정 완료", song.toString());
+        return songRepository.save(song);
+
     }
 
     @Transactional
-    public void updateLikeSong(Long songId) {
+    public Song updateLikeSong(Long songId) {
         Song song = songRepository.findById(songId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.SONG_NOT_FOUND));
 
         song.updateIsLiked(1);
-        log.info("{} 좋아요 설정 완료", song.toString());
+        return songRepository.save(song);
     }
 
-    public List<SongResponseDTO> getDislikeSong() {
+    public List<Song> getDislikeSong() {
 
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
         List<Song> unlikedSongList = songRepository.findUnlikedSongListByUsername(username);
         log.info("싫어요한 곡 리스트: {}", unlikedSongList.toString());
 
-        List<SongResponseDTO> songResponseDTOList = new ArrayList<>();
-        unlikedSongList.forEach(song -> {
-            songResponseDTOList.add(SongResponseDTO.builder()
-                    .name(song.getName())
-                    .artist(song.getArtist())
-                    .build());
-        });
-        log.info("싫어요한 곡 DTO 리스트: {}", songResponseDTOList.toString());
-        return songResponseDTOList;
+
+        return unlikedSongList;
     }
 }

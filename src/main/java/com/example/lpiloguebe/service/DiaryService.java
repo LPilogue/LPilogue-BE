@@ -84,7 +84,7 @@ public class DiaryService {
      * @return List<DiaryResponseDTO>
      */
 
-    public List<DiaryResponseDTO> getDiaryList(int year, int month) {
+    public List<Diary> getDiaryPreviewList(int year, int month) {
         // 년도, 월로 일기 리스트 조회
         LocalDateTime startDate = LocalDate.of(year, month, 1)
                 .atStartOfDay();
@@ -95,32 +95,10 @@ public class DiaryService {
         List<Diary> diaryList = diaryRepository.findDiariesByDateRange(startDate, endDate);
 
         log.info("일기 리스트: {}", diaryList);
-        List<DiaryResponseDTO> diaryResponseDTOList = new ArrayList<>();
 
-        diaryList.forEach(diary -> {
-            // MAIN 타입의 Song을 가져옴
-            Optional<Diary_song> mainSong = diary.getDiarySongList().stream()
-                    .filter(diary_song -> diary_song.getSong().getType() == SongType.MAIN)
-                    .findAny();
 
-            // DiaryResponseDTO 생성
-            DiaryResponseDTO diaryResponseDTO = DiaryResponseDTO.builder()
-                    .createdAt(diary.getCreatedAt())
-                    .content(diary.getContent())
-                    // map을 사용하여 Optional에서 값을 가져옴
-                    .songName(mainSong.map(diary_song -> diary_song.getSong().getName()).orElse(null))
-                    .artist(mainSong.map(diary_song -> diary_song.getSong().getArtist()).orElse(null))
-                    .songURI(mainSong.map(diary_song -> diary_song.getSong().getSongURI()).orElse(null))
-                    .songImagePath(mainSong.map(diary_song -> diary_song.getSong().getImagePath()).orElse(null))
-                    .cocktailName(diary.getDiary_cocktail().getCocktail().getName())
-                    .cocktailImagePath(diary.getDiary_cocktail().getCocktail().getImagePath())
-                    .build();
 
-            log.info("일기 응답 정보: {}", diaryResponseDTO.toString());
-            diaryResponseDTOList.add(diaryResponseDTO);
-        });
-
-        return diaryResponseDTOList;
+        return diaryList;
     }
 
 }
