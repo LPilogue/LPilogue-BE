@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/songs")
 @RequiredArgsConstructor
@@ -78,4 +80,23 @@ public class SongController {
                                 .toList())
                         .build());
     }
+
+    @GetMapping("/mostFrequentArtist")
+    @Operation(summary = "특정 연도에 가장 많이 기록한 아티스트 가져오기", description = "사용자가 특정 연도에 가장 많이 기록한 아티스트를 가져옵니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "가장 많이 기록한 아티스트 가져오기 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
+    })
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "year", description = "조회할 연도", required = true)
+    })
+    public ApiResponse<SongResponseDTO.mostFrequentArtistDTO> getMostFrequentArtist(@RequestParam int year) {
+        Map.Entry<String, Long> mostFrequentArtist = songService.getMostFrequentArtist(year);
+        return ApiResponse.onSuccess(
+                SongResponseDTO.mostFrequentArtistDTO.builder()
+                        .artist(mostFrequentArtist.getKey())
+                        .count(mostFrequentArtist.getValue())
+                        .build());
+    }
+
 }
