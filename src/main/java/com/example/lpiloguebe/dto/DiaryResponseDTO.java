@@ -1,5 +1,6 @@
 package com.example.lpiloguebe.dto;
 
+import com.example.lpiloguebe.enumeration.EmotionType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -53,5 +54,12 @@ public class DiaryResponseDTO {
         private Long diaryId;
         private LocalDateTime createdAt;
         private String message;
+    }
+
+    @Builder
+    @Getter
+    public static class mostFrequentEmotionDTO {
+        private EmotionType emotionType; // 감정 타입
+        private Long count; // 해당 감정의 일기 개수
     }
 }

@@ -23,6 +23,7 @@ public class Song extends Base {
     private String songURI;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private SongType type;
 
     @Column(nullable = false)
