@@ -28,15 +28,15 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원가입 성공"),
     })
     @Parameters({
-            @io.swagger.v3.oas.annotations.Parameter(name = "username", description = "로그인 ID", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "password", description = "로그인 비밀번호", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "nickname", description = "사용자 닉네임", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "city", description = "사용자 거주 도시", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "happy", description = "기분이 좋을 때 더 듣고싶은 음악 1: 신나는 업템포 음악 0: 잔잔한 분위기의 음악", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "sad", description = "우울할 때 찾게 되는 음악 1: 슬픔을 더 느낄 수 있는 감성적인 음악 0: 기분을 바꿔줄 밝은 음악", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "stressed", description = "스트레스를 받을 때 더 끌리는 음악 1: 강렬한 비트와 강한 사운드의 음악 0: 차분하고 편안한 분위기의 음악", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "lonely", description = "외로움을 느낄 때 더 듣고싶은 음악 1: 공감할 수 있는 가사와 감성적인 음악 0: 신나는 위로의 음악", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "artist", description = "좋아하는 아티스트", required = true)
+            @io.swagger.v3.oas.annotations.Parameter(name = "username", description = "로그인 ID"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "password", description = "로그인 비밀번호"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "nickname", description = "사용자 닉네임" ),
+            @io.swagger.v3.oas.annotations.Parameter(name = "city", description = "사용자 거주 도시"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "happy", description = "기분이 좋을 때 더 듣고싶은 음악 1: 신나는 업템포 음악 0: 잔잔한 분위기의 음악"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "sad", description = "우울할 때 찾게 되는 음악 1: 슬픔을 더 느낄 수 있는 감성적인 음악 0: 기분을 바꿔줄 밝은 음악"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "stressed", description = "스트레스를 받을 때 더 끌리는 음악 1: 강렬한 비트와 강한 사운드의 음악 0: 차분하고 편안한 분위기의 음악"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "lonely", description = "외로움을 느낄 때 더 듣고싶은 음악 1: 공감할 수 있는 가사와 감성적인 음악 0: 신나는 위로의 음악"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "artist", description = "좋아하는 아티스트")
     })
     public ApiResponse<UserResponseDTO.signupResultDTO> signup(@RequestBody UserRequestDTO.SignupDTO signupDTO) {
         User user = authService.signup(signupDTO);
@@ -54,8 +54,8 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "로그인 실패")
     })
     @Parameters({
-            @io.swagger.v3.oas.annotations.Parameter(name = "username", description = "로그인 ID", required = true),
-            @io.swagger.v3.oas.annotations.Parameter(name = "password", description = "로그인 비밀번호", required = true)
+            @io.swagger.v3.oas.annotations.Parameter(name = "username", description = "로그인 ID"),
+            @io.swagger.v3.oas.annotations.Parameter(name = "password", description = "로그인 비밀번호")
     })
     public ApiResponse<UserResponseDTO.signInResultDTO> signin(@RequestBody UserRequestDTO.SigninDTO signinDTO) {
         String jwtToken = authService.signin(signinDTO);
