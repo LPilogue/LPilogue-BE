@@ -41,7 +41,8 @@ public class DiaryController {
             @Parameter(name = "createdAt", description = "일기 작성 날짜 (2025-05-30T06:24:26.027Z 형식)"),
             @Parameter(name = "content", description = "일기 내용"),
             @Parameter(name = "songs", description = "일기에 추가할 노래 목록"),
-            @Parameter(name="cocktailName", description = "일기에 추가할 칵테일 이름")
+            @Parameter(name="cocktailName", description = "일기에 추가할 칵테일 이름"),
+            @Parameter(name = "emotionType", description = "일기 작성 시의 감정 상태 (HAPPY, SURPRISE, SAD, ANGRY, HURT, ANXIOUS)")
     })
     public ApiResponse<DiaryResponseDTO.createDiaryResultDTO> createDiary(@RequestBody DiaryRequestDTO diaryRequestDTO) {
         Diary diary = diaryService.createDiary(diaryRequestDTO);

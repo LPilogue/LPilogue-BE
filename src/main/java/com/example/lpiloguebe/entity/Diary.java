@@ -1,5 +1,6 @@
 package com.example.lpiloguebe.entity;
 
+import com.example.lpiloguebe.enumeration.EmotionType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,10 @@ public class Diary {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EmotionType emotionType;
+
     // 외래키를 가지는 쪽이 연관관계의 주인, JoinColumn 가짐
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,10 +39,11 @@ public class Diary {
     private Diary_cocktail diary_cocktail;
 
     @Builder
-    public Diary(String content, LocalDateTime createdAt, User user) {
+    public Diary(String content, LocalDateTime createdAt, User user, EmotionType emotionType) {
         this.content = content;
         this.createdAt = createdAt;
         this.user = user;
+        this.emotionType = emotionType;
     }
 
     public void addDiary_cocktail(Diary_cocktail diary_cocktail) {

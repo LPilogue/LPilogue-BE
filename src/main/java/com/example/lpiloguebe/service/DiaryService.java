@@ -49,6 +49,7 @@ public class DiaryService {
                 .content(diaryRequestDTO.getContent())
                 .user(user)
                 .createdAt(diaryRequestDTO.getCreatedAt())
+                .emotionType(diaryRequestDTO.getEmotionType())
                 .build();
         log.info("일기 정보: {}", diary.toString());
         diaryRepository.save(diary);

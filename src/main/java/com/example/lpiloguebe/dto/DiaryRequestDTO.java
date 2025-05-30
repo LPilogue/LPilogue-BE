@@ -1,5 +1,6 @@
 package com.example.lpiloguebe.dto;
 
+import com.example.lpiloguebe.enumeration.EmotionType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,4 +13,5 @@ public class DiaryRequestDTO {
     private String content;
     private List<SongRequestDTO> songs;
     private String cocktailName;
+    private EmotionType emotionType;
 }
