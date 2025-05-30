@@ -93,6 +93,19 @@ public class DiaryController {
     }
 
     // 일기 상세 조회
+    @GetMapping("/{diaryId}")
+    @Operation(summary = "일기 상세 조회", description = "사용자가 작성한 일기의 상세 정보를 조회할 수 있습니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "일기 상세 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "일기를 찾을 수 없음")
+    })
+    @Parameters({
+            @Parameter(name = "diaryId", description = "조회할 일기의 ID", required = true)
+    })
+    public ApiResponse<DiaryResponseDTO.getDiaryDetailDTO> getDiaryDetail(@PathVariable Long diaryId) {
 
+        Diary diary = diaryService.getDiaryDetail(diaryId);
+        return ApiResponse.onSuccess(DiaryConverter.toDiaryDetailDTO(diary));
+    }
 
 }

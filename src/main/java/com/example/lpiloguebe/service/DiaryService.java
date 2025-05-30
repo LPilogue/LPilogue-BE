@@ -101,4 +101,9 @@ public class DiaryService {
         return diaryList;
     }
 
+    public Diary getDiaryDetail(Long diaryId) {
+
+        return diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.DIARY_NOT_FOUND));
+    }
 }

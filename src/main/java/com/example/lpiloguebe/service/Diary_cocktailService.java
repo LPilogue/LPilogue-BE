@@ -1,9 +1,11 @@
 package com.example.lpiloguebe.service;
 
+import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.entity.Cocktail;
 import com.example.lpiloguebe.entity.Diary;
 import com.example.lpiloguebe.entity.Diary_cocktail;
+import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.repository.CocktailRepository;
 import com.example.lpiloguebe.repository.Diary_cocktailRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +30,9 @@ public class Diary_cocktailService {
     public Diary addCocktailToDiary(Diary diary, DiaryRequestDTO diaryRequestDTO) {
 
         // 칵테일 정보가 없으면 예외 처리
-        Cocktail cocktail = cocktailRepository.findByName(diaryRequestDTO.getCocktailName());
-        if (cocktail == null) {
-            throw new IllegalArgumentException("칵테일 정보가 없습니다.");
-        }
+        Cocktail cocktail = cocktailRepository.findByName(diaryRequestDTO.getCocktailName())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.COCKTAIL_NOT_FOUND));
+
         log.info("칵테일 정보: {}", cocktail.toString());
         /*
         DTO에서 칵테일 정보 가져와서 Diary_cocktail 테이블에 일기와 칵테일 정보 연결
