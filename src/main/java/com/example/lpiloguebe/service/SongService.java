@@ -2,7 +2,9 @@ package com.example.lpiloguebe.service;
 
 import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.SongResponseDTO;
+import com.example.lpiloguebe.entity.Diary_song;
 import com.example.lpiloguebe.entity.Song;
+import com.example.lpiloguebe.entity.User;
 import com.example.lpiloguebe.enumeration.SongType;
 import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.repository.SongRepository;
@@ -46,8 +48,18 @@ public class SongService {
     public List<Song> getDislikeSong() {
 
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Song> unlikedSongList = songRepository.findUnlikedSongListByUsername(username);
-        log.info("싫어요한 곡 리스트: {}", unlikedSongList.toString());
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        List<Song> unlikedSongList = new ArrayList<>();
+
+        unlikedSongList = user.getDiaryList()
+                .stream()
+                .flatMap(diary -> diary.getDiarySongList().stream())
+                .map(Diary_song::getSong)
+                .filter(song -> song.getIsLiked() == 0)
+                .toList();
+
 
 
         return unlikedSongList;
