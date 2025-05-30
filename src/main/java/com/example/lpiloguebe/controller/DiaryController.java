@@ -38,10 +38,10 @@ public class DiaryController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
     })
     @Parameters({
-            @Parameter(name = "createdAt", description = "일기 작성 날짜 (2025-05-30T06:24:26.027Z 형식)", required = true),
-            @Parameter(name = "content", description = "일기 내용", required = true),
-            @Parameter(name = "songs", description = "일기에 추가할 노래 목록", required = true),
-            @Parameter(name="cocktailName", description = "일기에 추가할 칵테일 이름", required = true)
+            @Parameter(name = "createdAt", description = "일기 작성 날짜 (2025-05-30T06:24:26.027Z 형식)"),
+            @Parameter(name = "content", description = "일기 내용"),
+            @Parameter(name = "songs", description = "일기에 추가할 노래 목록"),
+            @Parameter(name="cocktailName", description = "일기에 추가할 칵테일 이름")
     })
     public ApiResponse<DiaryResponseDTO.createDiaryResultDTO> createDiary(@RequestBody DiaryRequestDTO diaryRequestDTO) {
         Diary diary = diaryService.createDiary(diaryRequestDTO);
