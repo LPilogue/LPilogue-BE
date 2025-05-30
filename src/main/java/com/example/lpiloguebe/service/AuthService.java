@@ -68,7 +68,7 @@ public class AuthService {
 
         // 비밀번호 확인
         if (!bCryptPasswordEncoder.matches(signinDTO.getPassword(), user.getPassword())) {
-            throw new GeneralException(ErrorStatus.INVALID_PASSWORD);
+            throw new GeneralException(ErrorStatus.BAD_PASSWORD);
         }
 
         // 1 시간 동안 유효한 토큰 생성
