@@ -1,9 +1,11 @@
 package com.example.lpiloguebe.dto;
 
+import com.example.lpiloguebe.enumeration.EmotionType;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class UserResponseDTO {
 
@@ -46,4 +48,6 @@ public class UserResponseDTO {
         private int lonely;     // 외로움을 느낄 때 더 듣고싶은 음악 1: 공감할 수 있는 가사와 감성적인 음악 0: 신나는 위로의 음악
         private String artist;  // 좋아하는 아티스트
     }
+
+
 }

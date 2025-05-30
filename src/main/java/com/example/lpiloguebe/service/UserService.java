@@ -31,4 +31,7 @@ public class UserService {
         userPrefer.setUserPrefer(userUpdateDTO);
         return user_preferRepository.save(userPrefer);
     }
+
+    public void getUserRecap(int year) {
+    }
 }

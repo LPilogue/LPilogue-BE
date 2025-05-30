@@ -4,6 +4,7 @@ import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.*;
+import com.example.lpiloguebe.enumeration.EmotionType;
 import com.example.lpiloguebe.enumeration.SongType;
 import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.repository.*;
@@ -16,7 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -106,5 +109,23 @@ public class DiaryService {
 
         return diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.DIARY_NOT_FOUND));
+    }
+
+    public Map.Entry<EmotionType, Long> getMostFrequentEmotion(Integer year) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        return user.getDiaryList().stream()
+                .filter(diary -> diary.getCreatedAt().getYear() == year)
+                .map(Diary::getEmotionType)
+                .collect(Collectors.groupingBy(
+                        emotion -> emotion,
+                        Collectors.counting()
+                ))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.NO_DIARY_FOR_YEAR));
+
     }
 }

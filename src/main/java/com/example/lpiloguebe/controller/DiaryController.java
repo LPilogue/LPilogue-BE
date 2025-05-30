@@ -6,6 +6,7 @@ import com.example.lpiloguebe.converter.DiaryConverter;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.Diary;
+import com.example.lpiloguebe.enumeration.EmotionType;
 import com.example.lpiloguebe.service.DiaryService;
 import com.example.lpiloguebe.service.Diary_cocktailService;
 import com.example.lpiloguebe.service.Diary_songService;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/diaries")
@@ -109,4 +111,24 @@ public class DiaryController {
         return ApiResponse.onSuccess(DiaryConverter.toDiaryDetailDTO(diary));
     }
 
-}
+
+    @GetMapping("/mostFrequentEmotion")
+    @Operation(summary = "가장 많이 느낀 감정 조회", description = "사용자가 작성한 일기 중 가장 많이 느낀 감정을 조회할 수 있습니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "가장 많이 느낀 감정 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
+    })
+    @Parameters({
+            @Parameter(name = "year", description = "조회할 일기의 연도", required = true),
+
+    })
+    public ApiResponse<DiaryResponseDTO.mostFrequentEmotionDTO> getMostFrequentEmotion(@RequestParam Integer year) {
+        Map.Entry<EmotionType, Long> mostFrequentEmotion = diaryService.getMostFrequentEmotion(year);
+        return ApiResponse.onSuccess(
+                DiaryResponseDTO.mostFrequentEmotionDTO.builder()
+                        .emotionType(mostFrequentEmotion.getKey())
+                        .count(mostFrequentEmotion.getValue())
+                        .build());
+    }
+
+    }
