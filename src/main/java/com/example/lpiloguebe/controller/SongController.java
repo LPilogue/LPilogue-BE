@@ -99,4 +99,23 @@ public class SongController {
                         .build());
     }
 
+    @GetMapping("/mostFrequentSong")
+    @Operation(summary = "특정 연도에 가장 많이 기록한 곡 가져오기", description = "사용자가 특정 연도에 가장 많이 기록한 곡을 가져옵니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "가장 많이 기록한 곡 가져오기 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
+    })
+    @Parameters({
+            @io.swagger.v3.oas.annotations.Parameter(name = "year", description = "조회할 연도", required = true)
+    })
+    public ApiResponse<SongResponseDTO.mostFrequentSongDTO> getMostFrequentSong(@RequestParam int year) {
+        Map.Entry<SongService.SongInfo, Long> mostFrequentSong = songService.getMostFrequentSong(year);
+        return ApiResponse.onSuccess(
+                SongResponseDTO.mostFrequentSongDTO.builder()
+                        .title(mostFrequentSong.getKey().name())
+                        .imagePath(mostFrequentSong.getKey().imagePath())
+                        .count(mostFrequentSong.getValue())
+                        .build());
+    }
+
 }
