@@ -2,6 +2,7 @@ package com.example.lpiloguebe.service;
 
 import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.SongResponseDTO;
+import com.example.lpiloguebe.entity.Diary;
 import com.example.lpiloguebe.entity.Diary_song;
 import com.example.lpiloguebe.entity.Song;
 import com.example.lpiloguebe.entity.User;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,4 +67,46 @@ public class SongService {
 
         return unlikedSongList;
     }
+
+    public Map.Entry<String, Long> getMostFrequentArtist(int year) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+         return user.getDiaryList().stream()
+                .filter(diary -> diary.getCreatedAt().getYear() == year)
+                .flatMap(diary -> diary.getDiarySongList().stream()
+                        .map(Diary_song::getSong)
+                        .map(Song::getArtist))
+                .collect(Collectors.groupingBy(
+                        artist -> artist,
+                        Collectors.counting()
+                ))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.NO_SONG_FOR_YEAR));
+    }
+
+    public Map.Entry<SongInfo, Long> getMostFrequentSong(int year) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        return user.getDiaryList().stream()
+                .filter(diary -> diary.getCreatedAt().getYear() == year)
+                .flatMap(diary -> diary.getDiarySongList().stream()
+                        .map(Diary_song::getSong)
+                        .map(song -> new SongInfo(song.getName(), song.getImagePath())))
+                        .collect(Collectors.groupingBy(
+                                title -> title,
+                                Collectors.counting()
+                        ))
+                        .entrySet().stream()
+                        .max(Map.Entry.comparingByValue())
+                        .orElseThrow(() -> new GeneralException(ErrorStatus.NO_SONG_FOR_YEAR));
+
+    }
+
+    public record SongInfo(String name, String imagePath) {}
+
 }

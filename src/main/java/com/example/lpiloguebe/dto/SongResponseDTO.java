@@ -39,4 +39,19 @@ public class SongResponseDTO {
         private List<getSongResultDTO> songList; // 노래 리스트
     }
 
+    @Builder
+    @Getter
+    public static class mostFrequentArtistDTO {
+        private String artist; // 아티스트 이름
+        private Long count; // 해당 아티스트의 곡 수
+    }
+
+    @Builder
+    @Getter
+    public static class mostFrequentSongDTO {
+        private String title; // 노래 제목
+        private Long count; // 해당 노래의 재생 횟수
+        private String imagePath; // 노래 이미지 경로
+    }
+
 }
