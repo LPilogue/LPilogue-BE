@@ -112,7 +112,7 @@ public class DiaryController {
     }
 
 
-    @GetMapping("/mostFrequentEmotion")
+    @GetMapping("/mostFrequentEmotion/yearly")
     @Operation(summary = "특정 연도에 가장 많이 느낀 감정 조회", description = "사용자가 특정 연도에 작성한 일기 중 가장 많이 느낀 감정을 조회할 수 있습니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "가장 많이 느낀 감정 조회 성공"),
@@ -122,8 +122,8 @@ public class DiaryController {
             @Parameter(name = "year", description = "조회할 일기의 연도", required = true),
 
     })
-    public ApiResponse<DiaryResponseDTO.mostFrequentEmotionDTO> getMostFrequentEmotion(@RequestParam Integer year) {
-        Map.Entry<EmotionType, Long> mostFrequentEmotion = diaryService.getMostFrequentEmotion(year);
+    public ApiResponse<DiaryResponseDTO.mostFrequentEmotionDTO> getMostFrequentEmotionYearly(@RequestParam Integer year) {
+        Map.Entry<EmotionType, Long> mostFrequentEmotion = diaryService.getMostFrequentEmotionYearly(year);
         return ApiResponse.onSuccess(
                 DiaryResponseDTO.mostFrequentEmotionDTO.builder()
                         .emotionType(mostFrequentEmotion.getKey())
@@ -131,4 +131,23 @@ public class DiaryController {
                         .build());
     }
 
+    @GetMapping("/mostFrequentEmotion/monthly")
+    @Operation(summary = "특정 월에 가장 많이 기록한 감정 조회", description = "사용자가 특정 월에 작성한 일기 중 가장 많이 기록한 감정을 조회할 수 있습니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "가장 많이 기록한 감정 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
+    })
+    @Parameters({
+            @Parameter(name = "year", description = "조회할 일기의 연도", required = true),
+            @Parameter(name = "month", description = "조회할 일기의 월", required = true),
+    })
+    public ApiResponse<DiaryResponseDTO.mostFrequentEmotionDTO> getMostFrequentEmotionMonthly(@RequestParam Integer year, @RequestParam Integer month) {
+        Map.Entry<EmotionType, Long> mostFrequentEmotion = diaryService.getMostFrequentEmotionMonthly(year, month);
+        return ApiResponse.onSuccess(
+                DiaryResponseDTO.mostFrequentEmotionDTO.builder()
+                        .emotionType(mostFrequentEmotion.getKey())
+                        .count(mostFrequentEmotion.getValue())
+                        .build());
     }
+
+}
