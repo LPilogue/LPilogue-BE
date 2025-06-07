@@ -4,6 +4,7 @@ import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.entity.Diary;
 import com.example.lpiloguebe.entity.Diary_song;
 import com.example.lpiloguebe.entity.Song;
+import com.example.lpiloguebe.repository.DiaryRepository;
 import com.example.lpiloguebe.repository.Diary_songRepository;
 import com.example.lpiloguebe.repository.SongRepository;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,8 @@ public class Diary_songService {
     private final Diary_songRepository diary_songRepository;
 
     private final SongRepository songRepository;
+    private final DiaryRepository diaryRepository;
+
     /**
      * 일기와 노래를 연결하는 메서드
      * @param diary
@@ -56,9 +59,10 @@ public class Diary_songService {
                     diary_songRepository.save(diary_song);
                     log.info("Diary_song 저장 완료");
                     diary.getDiarySongList().add(diary_song);
+
                     log.info("일기 {}의 노래 리스트: {}", diary.getId(), diary.getDiarySongList().stream());
 
                 });
-        return diary;
+        return diaryRepository.save(diary);
     }
 }
