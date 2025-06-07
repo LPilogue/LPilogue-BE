@@ -28,6 +28,7 @@ public class DiaryResponseDTO {
     @Builder
     @Getter
     public static class getDiaryPreviewDTO {
+        private Long diaryId;
         private LocalDateTime createdAt; // 일기 작성 시간
         private String songImagePath; // 대표 곡 이미지 경로
     }

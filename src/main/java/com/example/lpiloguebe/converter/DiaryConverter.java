@@ -28,6 +28,7 @@ public class DiaryConverter {
                         .findFirst()
                         .map(diarySong -> diarySong.getSong().getImagePath())
                         .orElseThrow(() -> new GeneralException(ErrorStatus.MAIN_SONG_NOT_FOUND))))
+                .diaryId(diary.getId())
                 .build();
 
     }
