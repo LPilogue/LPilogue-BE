@@ -29,7 +29,7 @@ public class User extends Base{
     private String city;
 
     // mappedBy에는 반대쪽 entity가 나를 참조하는 필드명이 들어감
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Diary> diaryList = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

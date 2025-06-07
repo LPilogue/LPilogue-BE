@@ -54,13 +54,13 @@ public class DiaryService {
                 .createdAt(diaryRequestDTO.getCreatedAt())
                 .emotionType(diaryRequestDTO.getEmotionType())
                 .build();
-        log.info("일기 정보: {}", diary.toString());
-        diaryRepository.save(diary);
-        log.info("일기 저장 완료");
-        user.getDiaryList().add(diary);
-        log.info("user {}의 일기 리스트: {}", user.getUsername(), user.getDiaryList());
+        log.info("일기 정보: {}", diary.getContent());
 
-        return diary;
+        user.getDiaryList().add(diary);
+        userRepository.save(user);
+        log.info("user {}의 일기 리스트: {}", user.getUsername(), user.getDiaryList().size());
+
+        return diaryRepository.save(diary);
     }
 
     public boolean validateCreatedAt(LocalDateTime createdAt) {

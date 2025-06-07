@@ -7,6 +7,7 @@ import com.example.lpiloguebe.entity.Diary;
 import com.example.lpiloguebe.entity.Diary_cocktail;
 import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.repository.CocktailRepository;
+import com.example.lpiloguebe.repository.DiaryRepository;
 import com.example.lpiloguebe.repository.Diary_cocktailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class Diary_cocktailService {
     private final CocktailRepository cocktailRepository;
 
     private final Diary_cocktailRepository diary_cocktailRepository;
+    private final DiaryRepository diaryRepository;
 
     /**
      * 일기와 칵테일 정보를 연결하는 메서드
@@ -45,7 +47,8 @@ public class Diary_cocktailService {
         log.info("Diary_cocktail 정보: {}", diary_cocktail.toString());
         diary_cocktailRepository.save(diary_cocktail);
         diary.addDiary_cocktail(diary_cocktail);
+
         log.info("Diary_cocktail 저장, diary {}에 추가 완료", diary.getId());
-        return diary;
+        return diaryRepository.save(diary);
     }
 }

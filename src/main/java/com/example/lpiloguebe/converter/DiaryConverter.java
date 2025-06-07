@@ -16,6 +16,7 @@ public class DiaryConverter {
                 .diaryPreviewList(diaryList.stream()
                         .map(DiaryConverter::toDiaryPreviewDTO)
                         .toList())
+                .totalElements(diaryList.size())
                 .build();
     }
 
@@ -25,6 +26,7 @@ public class DiaryConverter {
                 .songImagePath(String.valueOf(diary.getDiarySongList().stream()
                         .filter(diarySong -> diarySong.getSong().getType() == SongType.MAIN)
                         .findFirst()
+                        .map(diarySong -> diarySong.getSong().getImagePath())
                         .orElseThrow(() -> new GeneralException(ErrorStatus.MAIN_SONG_NOT_FOUND))))
                 .build();
 
