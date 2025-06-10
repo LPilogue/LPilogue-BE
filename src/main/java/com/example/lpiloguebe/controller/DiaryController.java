@@ -6,6 +6,7 @@ import com.example.lpiloguebe.converter.DiaryConverter;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.dto.DiaryResponseDTO;
 import com.example.lpiloguebe.entity.Diary;
+import com.example.lpiloguebe.entity.Song;
 import com.example.lpiloguebe.enumeration.EmotionType;
 import com.example.lpiloguebe.service.DiaryService;
 import com.example.lpiloguebe.service.Diary_cocktailService;
@@ -149,5 +150,37 @@ public class DiaryController {
                         .count(mostFrequentEmotion.getValue())
                         .build());
     }
+
+    @GetMapping("/{diaryId}/songs")
+    @Operation(summary = "일기에 추가된 곡 조회", description = "특정 일기에 추가된 곡들을 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "일기에 추가된 곡 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
+    })
+    @Parameters({
+            @Parameter(name = "diaryId", description = "조회할 일기의 ID", required = true)
+    })
+    public ApiResponse<DiaryResponseDTO.diarySongListDTO> getDiarySongs(@PathVariable Long diaryId) {
+        List<Song> diarySongs = diary_songService.getDiarySongs(diaryId);
+        return ApiResponse.onSuccess(
+                DiaryConverter.toDiarySongListDTO(diarySongs)
+        );
+    }
+
+    @GetMapping("/{diaryId}/emotions")
+    @Operation(summary = "일기에 추가된 감정 조회", description = "특정 일기에 추가된 감정을 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "일기에 추가된 감정 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청")
+    })
+    @Parameters({
+            @Parameter(name = "diaryId", description = "조회할 일기의 ID", required = true)
+    })
+    public ApiResponse<EmotionType> getDiaryEmotion(@PathVariable Long diaryId) {
+        return ApiResponse.onSuccess(
+                diaryService.getDiaryEmotion(diaryId)
+        );
+    }
+
 
 }

@@ -36,6 +36,7 @@ public enum ErrorStatus implements ErrorCode {
     INVALID_Date(HttpStatus.BAD_REQUEST, "DIARY-002", "일기 작성 날짜는 3일 이내여야 합니다."),
     NO_DIARY_FOR_YEAR(HttpStatus.NOT_FOUND, "DIARY-003", "해당 연도의 일기가 없습니다."),
     NO_DIARY_FOR_MONTH(HttpStatus.NOT_FOUND, "DIARY-004", "해당 월의 일기가 없습니다."),
+    DIARY_SONG_NOT_FOUND(HttpStatus.NOT_FOUND, "DIARY-005", "해당 일기에 추천된 노래가 없습니다."),
     // cocktail
     COCKTAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "COCKTAIL-001", "해당 칵테일을 찾을 수 없습니다.");
 
