@@ -53,6 +53,7 @@ jobs:
             SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
             YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
             ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD }}
+            OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
           run: |
             echo "DB_USER=$DB_USER" >> .env
             echo "DB_PASSWORD=$DB_PASSWORD" >> .env
@@ -64,6 +65,7 @@ jobs:
             echo "SPOTIFY_CLIENT_SECRET=$SPOTIFY_CLIENT_SECRET" >> .env
             echo "YOUTUBE_API_KEY=$YOUTUBE_API_KEY" >> .env
             echo "ROOT_PASSWORD=$ROOT_PASSWORD" >> .env
+            echo "OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY" >> .env
             docker compose rm -f spring-boot-app && docker compose up -d spring-boot-app
 
 
