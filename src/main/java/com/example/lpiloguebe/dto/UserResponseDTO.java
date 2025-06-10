@@ -19,6 +19,7 @@ public class UserResponseDTO {
     @Builder
     @Getter
     public static class signInResultDTO {
+        private String nickname;
         private String accessToken;
 
     }
