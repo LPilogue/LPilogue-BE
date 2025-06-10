@@ -63,4 +63,22 @@ public class DiaryResponseDTO {
         private EmotionType emotionType; // 감정 타입
         private Long count; // 해당 감정의 일기 개수
     }
+
+    @Builder
+    @Getter
+    public static class diarySongDTO {
+        private Long songId; // 곡 ID
+        private String songName; // 곡 이름
+        private String artist; // 아티스트 이름
+        private String songURI; // 곡 URI
+        private String songImagePath; // 곡 이미지 경로
+
+    }
+
+    @Builder
+    @Getter
+    public static class diarySongListDTO {
+        private List<diarySongDTO> diarySongList; // 일기 곡 리스트
+
+    }
 }

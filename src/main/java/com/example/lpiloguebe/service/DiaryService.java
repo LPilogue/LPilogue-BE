@@ -145,4 +145,11 @@ public class DiaryService {
                 .max(Map.Entry.comparingByValue())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.NO_DIARY_FOR_MONTH));
     }
+
+    public EmotionType getDiaryEmotion(Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.DIARY_NOT_FOUND));
+
+        return diary.getEmotionType();
+    }
 }

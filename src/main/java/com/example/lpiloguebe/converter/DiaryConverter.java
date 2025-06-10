@@ -53,4 +53,22 @@ public class DiaryConverter {
                 .build();
     }
 
+    public static DiaryResponseDTO.diarySongDTO toDiarySongDTO(Song song) {
+        return DiaryResponseDTO.diarySongDTO.builder()
+                .songId(song.getId())
+                .songURI(song.getSongURI())
+                .songName(song.getName())
+                .artist(song.getArtist())
+                .songImagePath(song.getImagePath())
+                .build();
+    }
+
+    public static DiaryResponseDTO.diarySongListDTO toDiarySongListDTO(List<Song> songList) {
+        return DiaryResponseDTO.diarySongListDTO.builder()
+                .diarySongList(songList.stream()
+                        .map(DiaryConverter::toDiarySongDTO)
+                        .toList())
+                .build();
+    }
+
 }
