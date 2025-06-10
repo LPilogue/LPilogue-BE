@@ -1,9 +1,11 @@
 package com.example.lpiloguebe.service;
 
+import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.DiaryRequestDTO;
 import com.example.lpiloguebe.entity.Diary;
 import com.example.lpiloguebe.entity.Diary_song;
 import com.example.lpiloguebe.entity.Song;
+import com.example.lpiloguebe.exception.GeneralException;
 import com.example.lpiloguebe.repository.DiaryRepository;
 import com.example.lpiloguebe.repository.Diary_songRepository;
 import com.example.lpiloguebe.repository.SongRepository;
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -64,5 +68,18 @@ public class Diary_songService {
 
                 });
         return diaryRepository.save(diary);
+    }
+
+    public List<Song> getDiarySongs(Long diaryId) {
+
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.DIARY_NOT_FOUND));
+
+        List<Diary_song> diarySongs = diary_songRepository.findAllByDiary(diary)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.DIARY_SONG_NOT_FOUND));
+
+        return diarySongs.stream()
+                .map(Diary_song::getSong)
+                .toList();
     }
 }
