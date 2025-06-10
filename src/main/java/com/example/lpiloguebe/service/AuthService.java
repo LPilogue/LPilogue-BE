@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -60,7 +62,7 @@ public class AuthService {
 
     }
 
-    public String signin(UserRequestDTO.SigninDTO signinDTO) {
+    public Map<String,String> signin(UserRequestDTO.SigninDTO signinDTO) {
 
         // username으로 user 조회
         User user = userRepository.findByUsername(signinDTO.getUsername())
@@ -72,7 +74,10 @@ public class AuthService {
         }
 
         // 1 시간 동안 유효한 토큰 생성
-        return jwtUtil.generateToken(user.getUsername(), 3600000);
+         return Map.of(
+                 "accessToken", jwtUtil.generateToken(user.getUsername(), 3600000),
+                 "nickname", user.getNickname()
+        );
 
     }
 

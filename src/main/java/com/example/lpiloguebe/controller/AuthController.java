@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -58,11 +60,12 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.Parameter(name = "password", description = "로그인 비밀번호")
     })
     public ApiResponse<UserResponseDTO.signInResultDTO> signin(@RequestBody UserRequestDTO.SigninDTO signinDTO) {
-        String jwtToken = authService.signin(signinDTO);
+        Map<String, String> signin = authService.signin(signinDTO);
 
         return ApiResponse.onSuccess(
                 UserResponseDTO.signInResultDTO.builder()
-                        .accessToken("Bearer " + jwtToken)
+                        .nickname(signin.get("nickname"))
+                        .accessToken("Bearer " + signin.get("accessToken"))
                         .build());
 
     }
