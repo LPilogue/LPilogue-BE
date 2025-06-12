@@ -60,13 +60,9 @@ public class AuthController {
             @io.swagger.v3.oas.annotations.Parameter(name = "password", description = "로그인 비밀번호")
     })
     public ApiResponse<UserResponseDTO.signInResultDTO> signin(@RequestBody UserRequestDTO.SigninDTO signinDTO) {
-        Map<String, String> signin = authService.signin(signinDTO);
+        UserResponseDTO.signInResultDTO signin = authService.signin(signinDTO);
 
-        return ApiResponse.onSuccess(
-                UserResponseDTO.signInResultDTO.builder()
-                        .nickname(signin.get("nickname"))
-                        .accessToken("Bearer " + signin.get("accessToken"))
-                        .build());
+        return ApiResponse.onSuccess(signin);
 
     }
 
