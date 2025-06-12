@@ -2,6 +2,7 @@ package com.example.lpiloguebe.service;
 
 import com.example.lpiloguebe.apiPayload.code.status.ErrorStatus;
 import com.example.lpiloguebe.dto.UserRequestDTO;
+import com.example.lpiloguebe.dto.UserResponseDTO;
 import com.example.lpiloguebe.entity.User;
 import com.example.lpiloguebe.entity.User_prefer;
 import com.example.lpiloguebe.exception.GeneralException;
@@ -62,7 +63,7 @@ public class AuthService {
 
     }
 
-    public Map<String,String> signin(UserRequestDTO.SigninDTO signinDTO) {
+    public UserResponseDTO.signInResultDTO signin(UserRequestDTO.SigninDTO signinDTO) {
 
         // username으로 user 조회
         User user = userRepository.findByUsername(signinDTO.getUsername())
@@ -74,10 +75,11 @@ public class AuthService {
         }
 
         // 1 시간 동안 유효한 토큰 생성
-         return Map.of(
-                 "accessToken", jwtUtil.generateToken(user.getUsername(), 3600000),
-                 "nickname", user.getNickname()
-        );
+         return UserResponseDTO.signInResultDTO.builder()
+                .userId(user.getId())
+                .nickname(user.getNickname())
+                .accessToken("Bearer " + jwtUtil.generateToken(user.getUsername(), 3600)) // 1시간 = 3600초
+                .build();
 
     }
 
