@@ -78,7 +78,7 @@ public class AuthService {
          return UserResponseDTO.signInResultDTO.builder()
                 .userId(user.getId())
                 .nickname(user.getNickname())
-                .accessToken("Bearer " + jwtUtil.generateToken(user.getUsername(), 3600)) // 1시간 = 3600초
+                .accessToken("Bearer " + jwtUtil.generateToken(user.getUsername(), 3600000))
                 .build();
 
     }
