@@ -50,6 +50,7 @@ public class DiaryConverter {
                 .songImagePath(mainSong.getImagePath())
                 .cocktailName(diary.getDiary_cocktail().getCocktail().getName())
                 .cocktailImagePath(diary.getDiary_cocktail().getCocktail().getImagePath())
+                .cocktailDescription(diary.getDiary_cocktail().getCocktail().getDescription())
                 .build();
     }
 

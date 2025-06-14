@@ -23,6 +23,7 @@ public class DiaryResponseDTO {
         private String songImagePath;
         private String cocktailName;
         private String cocktailImagePath;
+        private String cocktailDescription;
     }
 
     @Builder
